@@ -153,37 +153,3 @@ class Character():
         return self.status
     def getSect(self):
         return self.sect
-'''
-class Window(Frame):
-    def __init__(self, master=None):
-        Frame.__init__(self, master)
-        self.master = master
-
-        menu = Menu(self.master)
-        self.master.config(menu=menu)
-
-
-        # primeiro menu "File"
-        fileMenu = Menu(menu)
-        fileMenu.add_command(label="Item")
-        # adicionando um comando ao menu Exit para fechar a janela
-        fileMenu.add_command(label="Exit", command=self.exitProgram)
-        #submenu
-        menu.add_cascade(label="File", menu=fileMenu)
-
-        # submenu "Save" dentro do menu "File"
-        saveMenu = Menu(fileMenu)
-        saveMenu.add_command(label="Save")
-        saveMenu.add_command(label="Save As")
-        saveMenu.add_separator()
-        fileMenu.add_cascade(label = 'Save file', menu = saveMenu)
-
-        # segundo menu "Edit"
-        editMenu = Menu(menu)
-        editMenu.add_command(label="Undo")
-        editMenu.add_command(label="Redo")
-        menu.add_cascade(label="Edit", menu=editMenu)
-
-    def exitProgram(self):
-        exit()
-        '''

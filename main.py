@@ -1,5 +1,7 @@
 from classes import *
 from tkinter import *
+import os
+import json
 
 ####Criação das Classes Fixas####
 #Disciplinas
@@ -59,6 +61,16 @@ priscus = Status("Priscus", "Honorary Advisor", "Honorary advisor of any high ra
 baron = Status("Baron", "Ruling a city", "Ruler of an Anarch territory")
 #City
 city = City("Genericville")
+####File Loading####
+file_path = 'StoryTeller/data.txt'
+if os.stat(file_path).st_size == 0:
+    new = True
+else:
+    new = False
+    f = open('StoryTeller/data.txt', 'r')
+    load = json.load(f)
+    f.close()
+    print("Arquivo carregado com sucesso")
 ####Init do Tkinter####
 #Define tela principal
 root = Tk()
@@ -85,20 +97,31 @@ def entervalue():
 for frame in (frameMain, frameCharacter, frameCity, frameClans, frameDisci, frameInit):
     frame.grid(row=0, column=0, sticky='news')
 
-label1 = Label(frameInit,text="City Name", font="none 20 bold")
-label1.pack(pady=15, padx=15, side=TOP)
-entry1 = Entry(frameInit,width=20, font='none 18 bold',textvar=textinput)
-entry1.pack(pady=15, padx=15, side=TOP)
-button1 = Button(frameInit, text='Enter', command=entervalue)
-button1.pack(pady=15, padx=15, side=TOP)
+#Tela frameInit
+labelFI = Label(frameInit,text="City Name", font="none 20 bold")
+labelFI.pack(pady=15, padx=300, side=TOP)
+entryFI = Entry(frameInit,width=20, font='none 18 bold',textvar=textinput)
+entryFI.pack(pady=15, padx=300, side=TOP)
+buttonFI = Button(frameInit, text='Enter', command=entervalue)
+buttonFI.pack(pady=15, padx=300, side=TOP)
 
+#Tela frameMain
+bCharPage = Button(frameMain, text='Chars', command=lambda: raise_frame(frameCharacter))
+bCharPage.pack(pady=15, padx=15, side=LEFT)
+bClanPage = Button(frameMain, text='Clans', command=lambda: raise_frame(frameClans))
+bClanPage.pack(pady=15, padx=15, side=LEFT)
+bDisciPage = Button(frameMain, text='Disci', command=lambda: raise_frame(frameDisci))
+bDisciPage.pack(pady=15, padx=15, side=LEFT)
 
+if new:
+    raise_frame(frameInit)
+else:
+    raise_frame(frameMain)
 
-raise_frame(frameInit)
 root.wm_title("StoryTeller")
 root.geometry("900x600")
 root.resizable(False, False)
-root.config(background="grey")
+root.config(background="white")
 root.mainloop()
 
 
