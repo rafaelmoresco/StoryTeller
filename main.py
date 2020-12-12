@@ -82,6 +82,10 @@ frameCharacter = Frame(root)
 frameCity = Frame(root)
 frameClans = Frame(root)
 frameDisci = Frame(root)
+frameBoon = Frame(root)
+frameCharacterC = Frame(root)
+frameCityC = Frame(root)
+frameBoonC = Frame(root)
 #StringVars
 textinput=StringVar()
 #Funções
@@ -94,7 +98,7 @@ def entervalue():
     raise_frame(frameMain)
 #Modelagem Telas
 
-for frame in (frameMain, frameCharacter, frameCity, frameClans, frameDisci, frameInit):
+for frame in (frameMain, frameCharacter, frameCity, frameClans, frameDisci, frameInit, frameBoon, frameCharacterC, frameCityC, frameBoonC):
     frame.grid(row=0, column=0, sticky='news')
 
 #Tela frameInit
@@ -112,6 +116,36 @@ bClanPage = Button(frameMain, text='Clans', command=lambda: raise_frame(frameCla
 bClanPage.pack(pady=15, padx=15, side=LEFT)
 bDisciPage = Button(frameMain, text='Disci', command=lambda: raise_frame(frameDisci))
 bDisciPage.pack(pady=15, padx=15, side=LEFT)
+bBoonPage = Button(frameMain, text='Boons', command=lambda: raise_frame(frameBoon))
+bBoonPage.pack(pady=15, padx=15, side=LEFT)
+
+#Tela frameCharacter
+bVoltar1 = Button(frameCharacter, text='Back', command=lambda: raise_frame(frameMain))
+bVoltar1.pack(pady=15, padx=15, side=BOTTOM)
+bCriar1 = Button(frameCharacter, text='Create', command=lambda: raise_frame(frameCharacterC))
+bCriar1.pack(pady=15, padx=15, side=BOTTOM)
+
+#Tela frameCharacterC
+bVoltar5 = Button(frameCharacterC, text='Back', command=lambda: raise_frame(frameCharacter))
+bVoltar5.pack(pady=15, padx=15, side=BOTTOM)
+
+#Tela frameClans
+bVoltar2 = Button(frameClans, text='Back', command=lambda: raise_frame(frameMain))
+bVoltar2.pack(pady=15, padx=15, side=BOTTOM)
+
+#Tela frameDisci
+bVoltar3 = Button(frameDisci, text='Back', command=lambda: raise_frame(frameMain))
+bVoltar3.pack(pady=15, padx=15, side=BOTTOM)
+
+#Tela frameBoon
+bVoltar4 = Button(frameBoon, text='Back', command=lambda: raise_frame(frameMain))
+bVoltar4.pack(pady=15, padx=15, side=BOTTOM)
+bCriar2 = Button(frameBoon, text='Create', command=lambda: raise_frame(frameCharacterC))
+bCriar2.pack(pady=15, padx=15, side=BOTTOM)
+
+#Tela frameBoonC
+bVoltar6 = Button(frameBoonC, text='Back', command=lambda: raise_frame(frameBoon))
+bVoltar6.pack(pady=15, padx=15, side=BOTTOM)
 
 if new:
     raise_frame(frameInit)
