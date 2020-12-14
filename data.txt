@@ -1,0 +1,1 @@
+["Testman", "13", "65", "He is a test man", "camarilla", "prince", "malkavian"]

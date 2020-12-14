@@ -31,9 +31,9 @@ class Clan(Vampire):
         return self._cWeakness
     def getCDisciplines(self):
         x = []
-        x.append(self.dis1._getDName)
-        x.append(self.dis2._getDName)
-        x.append(self.dis3._getDName)
+        x.append(self._dis1.getDName)
+        x.append(self._dis2.getDName)
+        x.append(self._dis3.getDName)
         return x
 
 class Discipline():
@@ -44,8 +44,8 @@ class Discipline():
     
     def getDName(self):
         return self.dName
-    def getLevel(self):
-        return self.level
+    #def getLevel(self):
+        #return self.level
     def getDesc(self):
         return self.desc
 
