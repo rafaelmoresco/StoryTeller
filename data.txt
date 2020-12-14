@@ -1,1 +1,1 @@
-["Testman", "13", "65", "He is a test man", "camarilla", "prince", "malkavian"]
+[[0, "New Orleans"], [1, "Allan", "8", "300", "asdf", "cam", "prince", "ventrue"], [1, "Halvdan", "8", "250", "Cool guy, but sadly fucks up everything", "camarilla", "primogen", "gangrel"], [2, "Medium", "Allan", "Halvadan"]]

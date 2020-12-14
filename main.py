@@ -66,6 +66,10 @@ priscus = Status("Priscus", "Honorary Advisor", "Honorary advisor of any high ra
 baron = Status("Baron", "Ruling a city", "Ruler of an Anarch territory")
 #City
 city = City("Genericville")
+#Character
+lista_char = []
+#Boons
+lista_boon = []
 ####File Loading####
 file_path = 'StoryTeller/data.txt'
 if os.stat(file_path).st_size == 0:
@@ -75,6 +79,22 @@ else:
     f = open('StoryTeller/data.txt', 'r')
     load = json.load(f)
     f.close()
+    for i in range(len(load)):
+        if load[i][0] == 0:
+            city.setName(load[i][1])
+        elif load[i][0] == 1:
+            char = Character()
+            char.setName(load[i][1])
+            char.setGen(load[i][2])
+            char.setAge(load[i][3])
+            char.setInfo(load[i][4])
+            char.setSect(load[i][5])
+            char.setStatus(load[i][6])
+            char.setClan(load[i][7])
+            lista_char.append(char)
+        else:
+            boon = Boon(load[i][1], load[i][2], load[i][3])
+            lista_boon.append(boon)
     print("Arquivo carregado com sucesso")
 ####Init do Tkinter####
 #Define tela principal
@@ -95,6 +115,14 @@ textinput=StringVar()
 variable = StringVar()
 #Funções
 def raise_frame(frame):
+    if frame == frameCharacter:
+        listaChars.delete(0, len(lista_char))
+        for i in range(len(lista_char)):
+            listaChars.insert(i, lista_char[i].getName())
+    elif frame == frameBoon:
+        listaBoons.delete(0,len(lista_boon))
+        for i in range(len(lista_boon)):
+            listaBoons.insert(i, lista_boon[i].getOwner())
     frame.tkraise()
 def sair():
     root.destroy()
@@ -102,8 +130,9 @@ def entervalueCity():
     city.setName(textinput.get())
     raise_frame(frameMain)
     cityData = [0, textinput.get()]
+    temp = [cityData]
     f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
-    json.dump(cityData, f)
+    json.dump(temp, f)
     f.close()
 def criarC():
     name = e1.get()
@@ -113,17 +142,36 @@ def criarC():
     sect = e5.get()
     status = e6.get()
     clan = e7.get()
+    char = Character()
+    char.setName(name)
+    char.setGen(gen)
+    char.setAge(age)
+    char.setInfo(info)
+    char.setSect(sect)
+    char.setStatus(status)
+    char.setClan(clan)
+    lista_char.append(char)
     novochar = [1, name, gen, age, info, sect, status, clan]
+    f = open('StoryTeller\data.txt', 'r') #trocar para data.txt depois
+    temp = json.load(f)
+    f.close
+    temp.append(novochar)
     f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
-    json.dump(novochar, f)
+    json.dump(temp, f)
     f.close()
 def criarB():
     btype = e21.get()
     owner = e22.get()
     giver = e23.get()
     novoboon = [2, btype, owner, giver]
+    boon = Boon(btype, owner, giver)
+    lista_boon.append(boon)
+    f = open('StoryTeller\data.txt', 'r') #trocar para data.txt depois
+    temp = json.load(f)
+    f.close
+    temp.append(novoboon)
     f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
-    json.dump(novoboon, f)
+    json.dump(temp, f)
     f.close()
 #Modelagem Telas
 for frame in (frameMain, frameCharacter, frameCity, frameClans, frameBoon, frameDisci, frameInit, frameCriar, frameCriar2):
@@ -202,7 +250,7 @@ for i in range(len(lista_clans)):
     lClans.insert(END, '\n\n')
 s.config(command = lClans.yview)
 bVoltar = Button(frameClans, text = 'Voltar', command = lambda: raise_frame(frameMain))
-bVoltar.pack(pady = 15, padx = 15, side = LEFT)
+bVoltar.pack(pady = 15, padx = 15, side = BOTTOM)
 
 #tela frameBoon
 listaBoons = Listbox(frameBoon)

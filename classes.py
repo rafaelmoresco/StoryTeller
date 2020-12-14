@@ -141,14 +141,14 @@ class Character():
         self.status = status
     def setClan(self, clan):
         self.clan = clan
-    def getName(self, name):
-        return name
-    def getGen(self, gen):
-        return gen
-    def getAge(self, age):
-        return age
-    def getInfo(self, info):
-        return info
+    def getName(self):
+        return self.name
+    def getGen(self):
+        return self.gen
+    def getAge(self):
+        return self.age
+    def getInfo(self):
+        return self.info
     def getStatus(self):
         return self.status
     def getSect(self):
