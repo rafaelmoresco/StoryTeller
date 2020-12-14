@@ -72,16 +72,21 @@ lista_char = []
 lista_boon = []
 ####File Loading####
 file_path = 'StoryTeller/data.txt'
+#se o arquivo estiver vazio
 if os.stat(file_path).st_size == 0:
     new = True
+#se estiver com informações
 else:
     new = False
     f = open('StoryTeller/data.txt', 'r')
     load = json.load(f)
     f.close()
+    #lê o vetor de informações
     for i in range(len(load)):
+        #se o objeto for do tipo 0 (cidade)
         if load[i][0] == 0:
             city.setName(load[i][1])
+        #se o objeto for do tipo 1 (personagem)
         elif load[i][0] == 1:
             char = Character()
             char.setName(load[i][1])
@@ -92,6 +97,7 @@ else:
             char.setStatus(load[i][6])
             char.setClan(load[i][7])
             lista_char.append(char)
+        #se o objeto for do tipo 2 (divida)
         else:
             boon = Boon(load[i][1], load[i][2], load[i][3])
             lista_boon.append(boon)
@@ -113,19 +119,25 @@ frameDisci = Frame(root)
 #StringVars
 textinput=StringVar()
 variable = StringVar()
-#Funções
+####Funções####
+#Muda o frame e faz update
 def raise_frame(frame):
+    #se for o frame de personagens, atualiza a lista
     if frame == frameCharacter:
         listaChars.delete(0, len(lista_char))
         for i in range(len(lista_char)):
             listaChars.insert(i, lista_char[i].getName())
+    #se for o frame de dividas, atualiza a lista
     elif frame == frameBoon:
         listaBoons.delete(0,len(lista_boon))
         for i in range(len(lista_boon)):
             listaBoons.insert(i, lista_boon[i].getOwner())
+    #muda o frame
     frame.tkraise()
+#Sai do programa
 def sair():
     root.destroy()
+#Entra o nome da cidade
 def entervalueCity():
     city.setName(textinput.get())
     raise_frame(frameMain)
@@ -134,7 +146,9 @@ def entervalueCity():
     f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
     json.dump(temp, f)
     f.close()
+#Cria uma nova personagem
 def criarC():
+    #pega os valores dos campos de texto
     name = e1.get()
     gen = e2.get()
     age = e3.get()
@@ -142,6 +156,7 @@ def criarC():
     sect = e5.get()
     status = e6.get()
     clan = e7.get()
+    #cria o objeto e define os valores
     char = Character()
     char.setName(name)
     char.setGen(gen)
@@ -150,7 +165,9 @@ def criarC():
     char.setSect(sect)
     char.setStatus(status)
     char.setClan(clan)
+    #adiciona a lista de personagens
     lista_char.append(char)
+    #salva no arquivo
     novochar = [1, name, gen, age, info, sect, status, clan]
     f = open('StoryTeller\data.txt', 'r') #trocar para data.txt depois
     temp = json.load(f)
@@ -159,13 +176,18 @@ def criarC():
     f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
     json.dump(temp, f)
     f.close()
+#Cria uma nova divida
 def criarB():
+    #pega os valores dos campos de texto
     btype = e21.get()
     owner = e22.get()
     giver = e23.get()
-    novoboon = [2, btype, owner, giver]
+    #cria o objeto
     boon = Boon(btype, owner, giver)
+    #adiciona ao vetor de dividas
     lista_boon.append(boon)
+    #salva no arquivo
+    novoboon = [2, btype, owner, giver]
     f = open('StoryTeller\data.txt', 'r') #trocar para data.txt depois
     temp = json.load(f)
     f.close
@@ -295,15 +317,15 @@ s.config(command = lDisci.yview)
 bVoltar = Button(frameDisci, text = 'Voltar', command = lambda: raise_frame(frameMain))
 bVoltar.pack(pady = 15, padx = 15, side = BOTTOM)
 
+#define qual o frame inicial
 if new:
     raise_frame(frameInit)
 else:
     raise_frame(frameMain)
 
+#inicia a tela
 root.wm_title("StoryTeller")
 root.geometry("900x600")
 #root.resizable(False, False)
 root.config(background="white")
 root.mainloop()
-
-#print(city.name)
