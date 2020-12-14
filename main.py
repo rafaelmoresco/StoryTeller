@@ -85,6 +85,7 @@ frameInit = Frame(root)
 frameMain = Frame(root)
 frameCharacter = Frame(root)
 frameCriar = Frame(root)
+frameCriar2 = Frame(root)
 frameCity = Frame(root)
 frameClans = Frame(root)
 frameBoon = Frame(root)
@@ -97,9 +98,13 @@ def raise_frame(frame):
     frame.tkraise()
 def sair():
     root.destroy()
-def entervalue():
+def entervalueCity():
     city.setName(textinput.get())
     raise_frame(frameMain)
+    cityData = [0, textinput.get()]
+    f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
+    json.dump(cityData, f)
+    f.close()
 def criarC():
     name = e1.get()
     gen = e2.get()
@@ -108,12 +113,20 @@ def criarC():
     sect = e5.get()
     status = e6.get()
     clan = e7.get()
-    novochar = ['c', name, gen, age, info, sect, status, clan]
-    f = open('StoryTeller\data.txt', 'w') #trocar para StoryTeller\data.txt depois
+    novochar = [1, name, gen, age, info, sect, status, clan]
+    f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
     json.dump(novochar, f)
     f.close()
+def criarB():
+    btype = e21.get()
+    owner = e22.get()
+    giver = e23.get()
+    novoboon = [2, btype, owner, giver]
+    f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
+    json.dump(novoboon, f)
+    f.close()
 #Modelagem Telas
-for frame in (frameMain, frameCharacter, frameCity, frameClans, frameBoon, frameDisci, frameInit, frameCriar):
+for frame in (frameMain, frameCharacter, frameCity, frameClans, frameBoon, frameDisci, frameInit, frameCriar, frameCriar2):
     frame.grid(row=0, column=0, sticky='news')
 
 #Tela frameInit
@@ -121,7 +134,7 @@ labelFI = Label(frameInit,text="City Name", font="none 20 bold")
 labelFI.pack(pady=15, padx=300, side=TOP)
 entryFI = Entry(frameInit,width=20, font='none 18 bold',textvar=textinput)
 entryFI.pack(pady=15, padx=300, side=TOP)
-buttonFI = Button(frameInit, text='Enter', command=entervalue)
+buttonFI = Button(frameInit, text='Enter', command=entervalueCity)
 buttonFI.pack(pady=15, padx=300, side=TOP)
 
 #Tela frameMain
@@ -194,12 +207,29 @@ bVoltar.pack(pady = 15, padx = 15, side = LEFT)
 #tela frameBoon
 listaBoons = Listbox(frameBoon)
 listaBoons.pack(fill = X, expand = YES)
-bCriar = Button(frameBoon, text = 'Criar')
-bCriar.pack(pady = 15, padx = 15, side = LEFT)
+bCriarB = Button(frameBoon, text = 'Criar', command = lambda: raise_frame(frameCriar2))
+bCriarB.pack(pady = 15, padx = 15, side = LEFT)
 bEditar = Button(frameBoon, text = 'Editar')
 bEditar.pack(pady = 15, padx = 15, side = LEFT)
 bVoltar = Button(frameBoon, text = 'Voltar', command = lambda: raise_frame(frameMain))
 bVoltar.pack(pady = 15, padx = 15, side = LEFT)
+
+#tela frameCriar2
+l21 = Label(frameCriar2, text = "Type:").grid(row = 0, column = 0, sticky = W, pady = 2) 
+l22 = Label(frameCriar2, text = "Owner:").grid(row = 1, column = 0, sticky = W, pady = 2) 
+l23 = Label(frameCriar2, text = "Giver:").grid(row = 2, column = 0, sticky = W, pady = 2) 
+
+e21 = Entry(frameCriar2)
+e21.grid(row = 0, column = 1, pady = 2)
+e22 = Entry(frameCriar2)
+e22.grid(row = 1, column = 1, pady = 2)
+e23 = Entry(frameCriar2)
+e23.grid(row = 2, column = 1, pady = 2)
+
+bVoltar3 = Button(frameCriar2, text = 'Voltar', command = lambda: raise_frame(frameCharacter))
+bVoltar3.grid(row = 3, column = 1, sticky = W, pady = 2)
+bCriar3 = Button(frameCriar2, text = 'Criar', command = criarB)
+bCriar3.grid(row = 3, column = 0, sticky = W, pady = 2)
 
 #tela frameDisci
 s = Scrollbar(frameDisci)
