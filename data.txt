@@ -1,1 +1,1 @@
-[[0, "New Orleans"], [1, "Allan", "8", "300", "asdf", "cam", "prince", "ventrue"], [1, "Halvdan", "8", "250", "Cool guy, but sadly fucks up everything", "camarilla", "primogen", "gangrel"], [2, "Medium", "Allan", "Halvadan"]]
+[[0, "New Orleans"], [1, "Halvdan", "8", "250", "Makes bad choices", "camarilla", "Primogen", "Gangrel"], [1, "Allan", "8", "301", "Cool prince, for some reason doesnt like Halvdan", "Camarilla", "Prince", "Ventrue"], [2, "Small", "Halvdan", "250"]]
