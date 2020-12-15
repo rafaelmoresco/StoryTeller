@@ -116,9 +116,20 @@ frameCity = Frame(root)
 frameClans = Frame(root)
 frameBoon = Frame(root)
 frameDisci = Frame(root)
+frameViewC = Frame(root)
+frameViewB = Frame(root)
 #StringVars
-textinput=StringVar()
+textinput = StringVar()
 variable = StringVar()
+ec1 = StringVar()
+ec2 = StringVar()
+ec3 = StringVar()
+ec4 = StringVar()
+ec5 = StringVar()
+ec6 = StringVar()
+ec7 = StringVar()
+#Test
+listIndex = 0
 ####Funções####
 #Muda o frame e faz update
 def raise_frame(frame):
@@ -200,6 +211,49 @@ def deletarC():
     f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
     json.dump(temp, f)
     f.close()
+#Vizualizar uma personagem
+def viewC():
+    select = listaChars.curselection()
+    global listIndex
+    listIndex = int(select[0])
+    raise_frame(frameViewC)
+    ec1.set(lista_char[listIndex].getName())
+    ec2.set(lista_char[listIndex].getGen())
+    ec3.set(lista_char[listIndex].getAge())
+    ec4.set(lista_char[listIndex].getInfo())
+    ec5.set(lista_char[listIndex].getSect())
+    ec6.set(lista_char[listIndex].getStatus())
+    ec7.set(lista_char[listIndex].getClan())
+def editC():
+    #select = listaChars.curselection()
+    #listIndex = int(select[0])
+    lista_char[listIndex].setName(e31.get())
+    lista_char[listIndex].setGen(e32.get())
+    lista_char[listIndex].setAge(e33.get())
+    lista_char[listIndex].setInfo(e34.get())
+    lista_char[listIndex].setSect(e35.get())
+    lista_char[listIndex].setStatus(e36.get())
+    lista_char[listIndex].setClan(e37.get())
+    f = open('StoryTeller\data.txt', 'r') #trocar para data.txt depois
+    temp = json.load(f)
+    f.close
+    k = 0
+    for i in range(len(temp)):
+        if temp[i][0] == 1:
+            if k == listIndex:
+                temp[i][1] = lista_char[listIndex].getName()
+                temp[i][2] = lista_char[listIndex].getGen()
+                temp[i][3] = lista_char[listIndex].getAge()
+                temp[i][4] = lista_char[listIndex].getInfo()
+                temp[i][5] = lista_char[listIndex].getSect()
+                temp[i][6] = lista_char[listIndex].getStatus()
+                temp[i][7] = lista_char[listIndex].getClan()
+                break
+            else:
+                k += 1
+    f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
+    json.dump(temp, f)
+    f.close()
 #Cria uma nova divida
 def criarB():
     #pega os valores dos campos de texto
@@ -243,8 +297,11 @@ def deletarB():
     f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
     json.dump(temp, f)
     f.close()
+#Vizualizar uma divida
+def viewB():
+    pass
 #Modelagem Telas
-for frame in (frameMain, frameCharacter, frameCity, frameClans, frameBoon, frameDisci, frameInit, frameCriar, frameCriar2):
+for frame in (frameMain, frameCharacter, frameCity, frameClans, frameBoon, frameDisci, frameInit, frameCriar, frameCriar2, frameViewB, frameViewC):
     frame.grid(row=0, column=0, sticky='news')
 
 #Tela frameInit
@@ -270,7 +327,7 @@ listaChars = Listbox(frameCharacter)
 listaChars.pack(fill = X, expand = YES)
 bCriar = Button(frameCharacter, text = 'Criar', command = lambda: raise_frame(frameCriar))
 bCriar.pack(pady = 15, padx = 15, side = LEFT)
-bEditar = Button(frameCharacter, text = 'Vizualizar')
+bEditar = Button(frameCharacter, text = 'Vizualizar', command = viewC)
 bEditar.pack(pady = 15, padx = 15, side = LEFT)
 bDeletar = Button(frameCharacter, text = 'Deletar', command = deletarC)
 bDeletar.pack(pady = 15, padx = 15, side = LEFT)
@@ -305,6 +362,35 @@ bVoltar2 = Button(frameCriar, text = 'Voltar', command = lambda: raise_frame(fra
 bVoltar2.grid(row = 7, column = 1, sticky = W, pady = 2)
 bCriar2 = Button(frameCriar, text = 'Criar', command = criarC)
 bCriar2.grid(row = 7, column = 0, sticky = W, pady = 2)
+
+#tela frameViewC
+l31 = Label(frameViewC, text = "Name:").grid(row = 0, column = 0, sticky = W, pady = 2) 
+l32 = Label(frameViewC, text = "Generation:").grid(row = 1, column = 0, sticky = W, pady = 2) 
+l33 = Label(frameViewC, text = "Age:").grid(row = 2, column = 0, sticky = W, pady = 2) 
+l34 = Label(frameViewC, text = "Info:").grid(row = 3, column = 0, sticky = W, pady = 2) 
+l35 = Label(frameViewC, text = "Sect:").grid(row = 4, column = 0, sticky = W, pady = 2) 
+l36 = Label(frameViewC, text = "Status:").grid(row = 5, column = 0, sticky = W, pady = 2) 
+l37 = Label(frameViewC, text = "Clan:").grid(row = 6, column = 0, sticky = W, pady = 2) 
+
+e31 = Entry(frameViewC, textvar = ec1)
+e31.grid(row = 0, column = 1, pady = 2)
+e32 = Entry(frameViewC, textvar = ec2)
+e32.grid(row = 1, column = 1, pady = 2)
+e33 = Entry(frameViewC, textvar = ec3)
+e33.grid(row = 2, column = 1, pady = 2)
+e34 = Entry(frameViewC, textvar = ec4)
+e34.grid(row = 3, column = 1, pady = 2)
+e35 = Entry(frameViewC, textvar = ec5)
+e35.grid(row = 4, column = 1, pady = 2)
+e36 = Entry(frameViewC, textvar = ec6)
+e36.grid(row = 5, column = 1, pady = 2)
+e37 = Entry(frameViewC, textvar = ec7)
+e37.grid(row = 6, column = 1, pady = 2)
+
+bEditar2 = Button(frameViewC, text = 'Editar', command = editC)
+bEditar2.grid(row = 7, column = 1, sticky = W, pady = 2)
+bVoltar3 = Button(frameViewC, text = 'Voltar', command = lambda: raise_frame(frameCharacter))
+bVoltar3.grid(row = 7, column = 0, sticky = W, pady = 2)
 
 #tela frameClan
 s = Scrollbar(frameClans)

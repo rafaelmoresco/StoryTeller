@@ -153,3 +153,5 @@ class Character():
         return self.status
     def getSect(self):
         return self.sect
+    def getClan(self):
+        return self.clan
