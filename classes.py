@@ -109,12 +109,18 @@ class Boon():
         self.btype = btype
         self.owner = owner
         self.giver = giver
+    def setType(self, btype):
+        self.btype = btype
+    def setOwner(self, owner):
+        self.owner = owner
+    def setGiver(self, giver):
+        self.giver = giver
     def getOwner(self):
         return self.owner
     def getGiver(self):
         return self.giver
     def getType(self):
-        return self.giver
+        return self.btype
 
 class Character():
     def __init__(self):

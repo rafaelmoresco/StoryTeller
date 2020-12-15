@@ -128,6 +128,9 @@ ec4 = StringVar()
 ec5 = StringVar()
 ec6 = StringVar()
 ec7 = StringVar()
+eb1 = StringVar()
+eb2 = StringVar()
+eb3 = StringVar()
 #Test
 listIndex = 0
 ####Funções####
@@ -213,10 +216,14 @@ def deletarC():
     f.close()
 #Vizualizar uma personagem
 def viewC():
+    #seleciona o item da listview
     select = listaChars.curselection()
+    #pega um indice INT
     global listIndex
     listIndex = int(select[0])
+    #muda o frame
     raise_frame(frameViewC)
+    #define os campos de texto
     ec1.set(lista_char[listIndex].getName())
     ec2.set(lista_char[listIndex].getGen())
     ec3.set(lista_char[listIndex].getAge())
@@ -227,6 +234,7 @@ def viewC():
 def editC():
     #select = listaChars.curselection()
     #listIndex = int(select[0])
+    #atualiza o objeto com os campos de texto
     lista_char[listIndex].setName(e31.get())
     lista_char[listIndex].setGen(e32.get())
     lista_char[listIndex].setAge(e33.get())
@@ -234,6 +242,7 @@ def editC():
     lista_char[listIndex].setSect(e35.get())
     lista_char[listIndex].setStatus(e36.get())
     lista_char[listIndex].setClan(e37.get())
+    #modifica o arquivo salvo
     f = open('StoryTeller\data.txt', 'r') #trocar para data.txt depois
     temp = json.load(f)
     f.close
@@ -299,7 +308,39 @@ def deletarB():
     f.close()
 #Vizualizar uma divida
 def viewB():
-    pass
+    #seleciona o item da listview
+    select = listaBoons.curselection()
+    #pega um indice INT
+    global listIndex
+    listIndex = int(select[0])
+    #muda o frame
+    raise_frame(frameViewB)
+    #define os campos de texto
+    eb1.set(lista_boon[listIndex].getType())
+    eb2.set(lista_boon[listIndex].getOwner())
+    eb3.set(lista_boon[listIndex].getGiver())
+def editB():
+    #atualiza o objeto com os campos de texto
+    lista_boon[listIndex].setType(e41.get())
+    lista_boon[listIndex].setOwner(e42.get())
+    lista_boon[listIndex].setGiver(e43.get())
+    #modifica o arquivo salvo
+    f = open('StoryTeller\data.txt', 'r') #trocar para data.txt depois
+    temp = json.load(f)
+    f.close
+    k = 0
+    for i in range(len(temp)):
+        if temp[i][0] == 2:
+            if k == listIndex:
+                temp[i][1] = lista_boon[listIndex].getType()
+                temp[i][2] = lista_boon[listIndex].getOwner()
+                temp[i][3] = lista_char[listIndex].getAge()
+                break
+            else:
+                k += 1
+    f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
+    json.dump(temp, f)
+    f.close()
 #Modelagem Telas
 for frame in (frameMain, frameCharacter, frameCity, frameClans, frameBoon, frameDisci, frameInit, frameCriar, frameCriar2, frameViewB, frameViewC):
     frame.grid(row=0, column=0, sticky='news')
@@ -416,7 +457,7 @@ listaBoons = Listbox(frameBoon)
 listaBoons.pack(fill = X, expand = YES)
 bCriarB = Button(frameBoon, text = 'Criar', command = lambda: raise_frame(frameCriar2))
 bCriarB.pack(pady = 15, padx = 15, side = LEFT)
-bEditarB = Button(frameBoon, text = 'Vizualizar')
+bEditarB = Button(frameBoon, text = 'Vizualizar', command = viewB)
 bEditarB.pack(pady = 15, padx = 15, side = LEFT)
 bDeletarB = Button(frameBoon, text = 'Deletar', command = deletarB)
 bDeletarB.pack(pady = 15, padx = 15, side = LEFT)
@@ -435,10 +476,27 @@ e22.grid(row = 1, column = 1, pady = 2)
 e23 = Entry(frameCriar2)
 e23.grid(row = 2, column = 1, pady = 2)
 
-bVoltar3 = Button(frameCriar2, text = 'Voltar', command = lambda: raise_frame(frameCharacter))
-bVoltar3.grid(row = 3, column = 1, sticky = W, pady = 2)
+bVoltar4 = Button(frameCriar2, text = 'Voltar', command = lambda: raise_frame(frameBoon))
+bVoltar4.grid(row = 3, column = 1, sticky = W, pady = 2)
 bCriar3 = Button(frameCriar2, text = 'Criar', command = criarB)
 bCriar3.grid(row = 3, column = 0, sticky = W, pady = 2)
+
+#tela frameViewB
+l41 = Label(frameViewB, text = "Type:").grid(row = 0, column = 0, sticky = W, pady = 2) 
+l42 = Label(frameViewB, text = "Owner:").grid(row = 1, column = 0, sticky = W, pady = 2) 
+l43 = Label(frameViewB, text = "Giver:").grid(row = 2, column = 0, sticky = W, pady = 2) 
+
+e41 = Entry(frameViewB, textvar = eb1)
+e41.grid(row = 0, column = 1, pady = 2)
+e42 = Entry(frameViewB, textvar = eb2)
+e42.grid(row = 1, column = 1, pady = 2)
+e43 = Entry(frameViewB, textvar = eb3)
+e43.grid(row = 2, column = 1, pady = 2)
+
+bEditar3 = Button(frameViewB, text = 'Editar', command = editB)
+bEditar3.grid(row = 7, column = 1, sticky = W, pady = 2)
+bVoltar5 = Button(frameViewB, text = 'Voltar', command = lambda: raise_frame(frameBoon))
+bVoltar5.grid(row = 7, column = 0, sticky = W, pady = 2)
 
 #tela frameDisci
 s = Scrollbar(frameDisci)
