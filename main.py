@@ -176,6 +176,30 @@ def criarC():
     f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
     json.dump(temp, f)
     f.close()
+#Deleta uma personagem
+def deletarC():
+    #pega o item selecionado
+    select = listaChars.curselection()
+    x = int(select[0])
+    #deleta do vetor de objetos
+    y = lista_char.pop(x)
+    #deleta do listview
+    listaChars.delete(x)
+    #deleta do arquivo
+    f = open('StoryTeller\data.txt', 'r') #trocar para data.txt depois
+    temp = json.load(f)
+    f.close
+    k = 0
+    for i in range(len(temp)):
+        if temp[i][0] == 1:
+            if k == x:
+                z = temp.pop(i)
+                break
+            else:
+                k += 1
+    f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
+    json.dump(temp, f)
+    f.close()
 #Cria uma nova divida
 def criarB():
     #pega os valores dos campos de texto
@@ -192,6 +216,30 @@ def criarB():
     temp = json.load(f)
     f.close
     temp.append(novoboon)
+    f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
+    json.dump(temp, f)
+    f.close()
+#Deleta uma divida
+def deletarB():
+    #pega o item selecionado
+    select = listaBoons.curselection()
+    x = int(select[0])
+    #remove do vetor de objetos
+    y = lista_boon.pop(x)
+    #remove do listview
+    listaBoons.delete(x)
+    #remove do arquivo
+    f = open('StoryTeller\data.txt', 'r') #trocar para data.txt depois
+    temp = json.load(f)
+    f.close
+    k = 0
+    for i in range(len(temp)):
+        if temp[i][0] == 2:
+            if k == x:
+                z = temp.pop(i)
+                break
+            else:
+                k += 1
     f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
     json.dump(temp, f)
     f.close()
@@ -222,8 +270,10 @@ listaChars = Listbox(frameCharacter)
 listaChars.pack(fill = X, expand = YES)
 bCriar = Button(frameCharacter, text = 'Criar', command = lambda: raise_frame(frameCriar))
 bCriar.pack(pady = 15, padx = 15, side = LEFT)
-bEditar = Button(frameCharacter, text = 'Editar')
+bEditar = Button(frameCharacter, text = 'Vizualizar')
 bEditar.pack(pady = 15, padx = 15, side = LEFT)
+bDeletar = Button(frameCharacter, text = 'Deletar', command = deletarC)
+bDeletar.pack(pady = 15, padx = 15, side = LEFT)
 bVoltar = Button(frameCharacter, text = 'Voltar', command = lambda: raise_frame(frameMain))
 bVoltar.pack(pady = 15, padx = 15, side = LEFT)
 
@@ -268,7 +318,8 @@ for i in range(len(lista_clans)):
     lClans.insert(END, lista_clans[i]._cName)
     lClans.insert(END, ' - ')
     lClans.insert(END, "Weakness: "+str(lista_clans[i]._cWeakness))
-    lClans.insert(END, *X)
+    lClans.insert(END, ' - ')
+    lClans.insert(END, "Clan Disciplines: "+str(lista_clans[i].getCDisciplines()))
     lClans.insert(END, '\n\n')
 s.config(command = lClans.yview)
 bVoltar = Button(frameClans, text = 'Voltar', command = lambda: raise_frame(frameMain))
@@ -279,8 +330,10 @@ listaBoons = Listbox(frameBoon)
 listaBoons.pack(fill = X, expand = YES)
 bCriarB = Button(frameBoon, text = 'Criar', command = lambda: raise_frame(frameCriar2))
 bCriarB.pack(pady = 15, padx = 15, side = LEFT)
-bEditar = Button(frameBoon, text = 'Editar')
-bEditar.pack(pady = 15, padx = 15, side = LEFT)
+bEditarB = Button(frameBoon, text = 'Vizualizar')
+bEditarB.pack(pady = 15, padx = 15, side = LEFT)
+bDeletarB = Button(frameBoon, text = 'Deletar', command = deletarB)
+bDeletarB.pack(pady = 15, padx = 15, side = LEFT)
 bVoltar = Button(frameBoon, text = 'Voltar', command = lambda: raise_frame(frameMain))
 bVoltar.pack(pady = 15, padx = 15, side = LEFT)
 
@@ -325,7 +378,7 @@ else:
 
 #inicia a tela
 root.wm_title("StoryTeller")
-root.geometry("900x600")
-#root.resizable(False, False)
+root.geometry("865x445")
+root.resizable(False, False)
 root.config(background="white")
 root.mainloop()
