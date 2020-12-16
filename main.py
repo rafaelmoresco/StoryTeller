@@ -66,6 +66,7 @@ priscus = Status("Priscus", "Honorary Advisor", "Honorary advisor of any high ra
 baron = Status("Baron", "Ruling a city", "Ruler of an Anarch territory")
 #City
 city = City("Genericville")
+lista_setores = []
 #Character
 lista_char = []
 #Boons
@@ -98,9 +99,13 @@ else:
             char.setClan(load[i][7])
             lista_char.append(char)
         #se o objeto for do tipo 2 (divida)
-        else:
+        elif load[i][0] == 2:
             boon = Boon(load[i][1], load[i][2], load[i][3])
             lista_boon.append(boon)
+        #se o objeto for do tipo 3 (setor)
+        else:
+            setor = AdminS(load[i][1], load[i][2], load[i][3])
+            lista_setores.append(setor)
     print("Arquivo carregado com sucesso")
 ####Init do Tkinter####
 #Define tela principal
@@ -112,12 +117,14 @@ frameMain = Frame(root)
 frameCharacter = Frame(root)
 frameCriar = Frame(root)
 frameCriar2 = Frame(root)
+frameCriar3 = Frame(root)
 frameCity = Frame(root)
 frameClans = Frame(root)
 frameBoon = Frame(root)
 frameDisci = Frame(root)
 frameViewC = Frame(root)
 frameViewB = Frame(root)
+frameViewS = Frame(root)
 #StringVars
 textinput = StringVar()
 variable = StringVar()
@@ -131,6 +138,9 @@ ec7 = StringVar()
 eb1 = StringVar()
 eb2 = StringVar()
 eb3 = StringVar()
+es1 = StringVar()
+es2 = StringVar()
+es3 = StringVar()
 #Test
 listIndex = 0
 ####Funções####
@@ -146,6 +156,10 @@ def raise_frame(frame):
         listaBoons.delete(0,len(lista_boon))
         for i in range(len(lista_boon)):
             listaBoons.insert(i, lista_boon[i].getOwner())
+    elif frame == frameCity:
+        listaSectors.delete(0,len(lista_setores))
+        for i in range(len(lista_setores)):
+            listaSectors.insert(i, lista_setores[i].getSector())
     #muda o frame
     frame.tkraise()
 #Sai do programa
@@ -231,6 +245,7 @@ def viewC():
     ec5.set(lista_char[listIndex].getSect())
     ec6.set(lista_char[listIndex].getStatus())
     ec7.set(lista_char[listIndex].getClan())
+#Edita uma personagem
 def editC():
     #select = listaChars.curselection()
     #listIndex = int(select[0])
@@ -319,6 +334,7 @@ def viewB():
     eb1.set(lista_boon[listIndex].getType())
     eb2.set(lista_boon[listIndex].getOwner())
     eb3.set(lista_boon[listIndex].getGiver())
+#Editar uma divida
 def editB():
     #atualiza o objeto com os campos de texto
     lista_boon[listIndex].setType(e41.get())
@@ -334,7 +350,86 @@ def editB():
             if k == listIndex:
                 temp[i][1] = lista_boon[listIndex].getType()
                 temp[i][2] = lista_boon[listIndex].getOwner()
-                temp[i][3] = lista_char[listIndex].getAge()
+                temp[i][3] = lista_boon[listIndex].getGiver()
+                break
+            else:
+                k += 1
+    f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
+    json.dump(temp, f)
+    f.close()
+#Cria um novo setor
+def criarS():
+    #pega os valores dos campos de texto
+    sector = e51.get()
+    owner = e52.get()
+    control = e53.get()
+    #cria o objeto
+    setor = AdminS(sector, owner, control)
+    #adiciona ao vetor de dividas
+    lista_setores.append(setor)
+    #salva no arquivo
+    novosector = [3, sector, owner, control]
+    f = open('StoryTeller\data.txt', 'r') #trocar para data.txt depois
+    temp = json.load(f)
+    f.close
+    temp.append(novosector)
+    f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
+    json.dump(temp, f)
+    f.close()
+#Delata um setor
+def deletarS():
+    #pega o item selecionado
+    select = listaSectors.curselection()
+    x = int(select[0])
+    #remove do vetor de objetos
+    y = lista_setores.pop(x)
+    #remove do listview
+    listaSectors.delete(x)
+    #remove do arquivo
+    f = open('StoryTeller\data.txt', 'r') #trocar para data.txt depois
+    temp = json.load(f)
+    f.close
+    k = 0
+    for i in range(len(temp)):
+        if temp[i][0] == 3:
+            if k == x:
+                z = temp.pop(i)
+                break
+            else:
+                k += 1
+    f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
+    json.dump(temp, f)
+    f.close()
+#Vizualizar um setor
+def viewS():
+    #seleciona o item da listview
+    select = listaSectors.curselection()
+    #pega um indice INT
+    global listIndex
+    listIndex = int(select[0])
+    #muda o frame
+    raise_frame(frameViewS)
+    #define os campos de texto
+    es1.set(lista_setores[listIndex].getSector())
+    es2.set(lista_setores[listIndex].getOwner())
+    es3.set(lista_setores[listIndex].getControl())
+#Editar um setor
+def editS():
+    #atualiza o objeto com os campos de texto
+    lista_setores[listIndex].setSector(e61.get())
+    lista_setores[listIndex].setOwner(e62.get())
+    lista_setores[listIndex].setControl(e63.get())
+    #modifica o arquivo salvo
+    f = open('StoryTeller\data.txt', 'r') #trocar para data.txt depois
+    temp = json.load(f)
+    f.close
+    k = 0
+    for i in range(len(temp)):
+        if temp[i][0] == 3:
+            if k == listIndex:
+                temp[i][1] = lista_setores[listIndex].getSector()
+                temp[i][2] = lista_setores[listIndex].getOwner()
+                temp[i][3] = lista_setores[listIndex].getControl()
                 break
             else:
                 k += 1
@@ -342,7 +437,7 @@ def editB():
     json.dump(temp, f)
     f.close()
 #Modelagem Telas
-for frame in (frameMain, frameCharacter, frameCity, frameClans, frameBoon, frameDisci, frameInit, frameCriar, frameCriar2, frameViewB, frameViewC):
+for frame in (frameMain, frameCharacter, frameCity, frameClans, frameBoon, frameDisci, frameInit, frameCriar, frameCriar2, frameViewB, frameViewC, frameCriar3, frameViewS):
     frame.grid(row=0, column=0, sticky='news')
 
 #Tela frameInit
@@ -354,13 +449,15 @@ buttonFI = Button(frameInit, text='Enter', command=entervalueCity)
 buttonFI.pack(pady=15, padx=300, side=TOP)
 
 #Tela frameMain
-bCharPage = Button(frameMain, text='Chars', command=lambda: raise_frame(frameCharacter))
+bCharPage = Button(frameMain, text='Personagens', command=lambda: raise_frame(frameCharacter))
 bCharPage.pack(pady=15, padx=15, side=LEFT)
-bClanPage = Button(frameMain, text='Clans', command=lambda: raise_frame(frameClans))
-bClanPage.pack(pady=15, padx=15, side=LEFT)
-bBoonPage = Button(frameMain, text = 'Boon', command = lambda: raise_frame(frameBoon))
+bBoonPage = Button(frameMain, text = 'Dividas', command = lambda: raise_frame(frameBoon))
 bBoonPage.pack(pady = 15, padx = 15, side = LEFT)
-bDisciPage = Button(frameMain, text='Disci', command=lambda: raise_frame(frameDisci))
+bCityPage = Button(frameMain, text='Setores', command = lambda: raise_frame(frameCity))
+bCityPage.pack(pady = 15, padx = 15, side = LEFT)
+bClanPage = Button(frameMain, text='Clãs', command=lambda: raise_frame(frameClans))
+bClanPage.pack(pady=15, padx=15, side=LEFT)
+bDisciPage = Button(frameMain, text='Disciplinas', command=lambda: raise_frame(frameDisci))
 bDisciPage.pack(pady=15, padx=15, side=LEFT)
 
 #tela frameCharacter
@@ -496,6 +593,52 @@ e43.grid(row = 2, column = 1, pady = 2)
 bEditar3 = Button(frameViewB, text = 'Editar', command = editB)
 bEditar3.grid(row = 7, column = 1, sticky = W, pady = 2)
 bVoltar5 = Button(frameViewB, text = 'Voltar', command = lambda: raise_frame(frameBoon))
+bVoltar5.grid(row = 7, column = 0, sticky = W, pady = 2)
+
+#tela frameCity
+listaSectors = Listbox(frameCity)
+listaSectors.pack(fill = X, expand = YES)
+bCriar4 = Button(frameCity, text = 'Criar', command = lambda: raise_frame(frameCriar3))
+bCriar4.pack(pady = 15, padx = 15, side = LEFT)
+bEditar4 = Button(frameCity, text = 'Vizualizar', command = viewS)
+bEditar4.pack(pady = 15, padx = 15, side = LEFT)
+bDeletar3 = Button(frameCity, text = 'Deletar', command = deletarS)
+bDeletar3.pack(pady = 15, padx = 15, side = LEFT)
+bVoltar = Button(frameCity, text = 'Voltar', command = lambda: raise_frame(frameMain))
+bVoltar.pack(pady = 15, padx = 15, side = LEFT)
+
+#tela frameCriar3
+l51 = Label(frameCriar3, text = "Sector:").grid(row = 0, column = 0, sticky = W, pady = 2) 
+l52 = Label(frameCriar3, text = "Owner:").grid(row = 1, column = 0, sticky = W, pady = 2) 
+l53 = Label(frameCriar3, text = "Control:").grid(row = 2, column = 0, sticky = W, pady = 2) 
+
+e51 = Entry(frameCriar3)
+e51.grid(row = 0, column = 1, pady = 2)
+e52 = Entry(frameCriar3)
+e52.grid(row = 1, column = 1, pady = 2)
+e53 = Entry(frameCriar3)
+e53.grid(row = 2, column = 1, pady = 2)
+
+bVoltar1 = Button(frameCriar3, text = 'Voltar', command = lambda: raise_frame(frameCity))
+bVoltar1.grid(row = 3, column = 1, sticky = W, pady = 2)
+bCriar1 = Button(frameCriar3, text = 'Criar', command = criarS)
+bCriar1.grid(row = 3, column = 0, sticky = W, pady = 2)
+
+#tela frameViewS
+l61 = Label(frameViewS, text = "Sector:").grid(row = 0, column = 0, sticky = W, pady = 2) 
+l62 = Label(frameViewS, text = "Owner:").grid(row = 1, column = 0, sticky = W, pady = 2) 
+l63 = Label(frameViewS, text = "Control:").grid(row = 2, column = 0, sticky = W, pady = 2) 
+
+e61 = Entry(frameViewS, textvar = es1)
+e61.grid(row = 0, column = 1, pady = 2)
+e62 = Entry(frameViewS, textvar = es2)
+e62.grid(row = 1, column = 1, pady = 2)
+e63 = Entry(frameViewS, textvar = es3)
+e63.grid(row = 2, column = 1, pady = 2)
+
+bEditar3 = Button(frameViewS, text = 'Editar', command = editS)
+bEditar3.grid(row = 7, column = 1, sticky = W, pady = 2)
+bVoltar5 = Button(frameViewS, text = 'Voltar', command = lambda: raise_frame(frameCity))
 bVoltar5.grid(row = 7, column = 0, sticky = W, pady = 2)
 
 #tela frameDisci

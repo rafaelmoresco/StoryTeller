@@ -98,6 +98,18 @@ class AdminS():
         self.sector = sector
         self.owner = owner
         self.control = control
+    def getSector(self):
+        return self.sector
+    def getOwner(self):
+        return self.owner
+    def getControl(self):
+        return self.control
+    def setSector(self, sector):
+        self.sector = sector
+    def setOwner(self, owner):
+        self.owner = owner
+    def setControl(self, control):
+        self.control = control
 
 class Specialist():
     def __init__(self, name, function):
