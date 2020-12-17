@@ -106,7 +106,7 @@ else:
         else:
             setor = AdminS(load[i][1], load[i][2], load[i][3])
             lista_setores.append(setor)
-    print("Arquivo carregado com sucesso")
+    print("File successefuly loaded")
 ####Init do Tkinter####
 #Define tela principal
 root = Tk()
@@ -449,31 +449,31 @@ buttonFI = Button(frameInit, text='Enter', command=entervalueCity)
 buttonFI.pack(pady=15, padx=300, side=TOP)
 
 #Tela frameMain
-labelCN = Label(frameMain,text="Cidade: "+city.getName())
+labelCN = Label(frameMain,text="City: "+city.getName())
 labelCN.grid(row = 0, column = 3, pady = 2, sticky = N)
 empty0 = LabelFrame(frameMain, height = 200).grid(row = 1, column = 0)
-empty1 = LabelFrame(frameMain, width = 280).grid(row = 0, column = 0)
-bCharPage = Button(frameMain, text='Personagens', command=lambda: raise_frame(frameCharacter))
+empty1 = LabelFrame(frameMain, width = 260).grid(row = 0, column = 0)
+bCharPage = Button(frameMain, text='Characters', command=lambda: raise_frame(frameCharacter))
 bCharPage.grid(row = 2, column = 1, pady = 2, sticky = S)
-bBoonPage = Button(frameMain, text = 'Dividas', command = lambda: raise_frame(frameBoon))
+bBoonPage = Button(frameMain, text = 'Boons', command = lambda: raise_frame(frameBoon))
 bBoonPage.grid(row = 2, column = 2, pady = 2, sticky = S)
-bCityPage = Button(frameMain, text='Setores', command = lambda: raise_frame(frameCity))
+bCityPage = Button(frameMain, text='Sectors', command = lambda: raise_frame(frameCity))
 bCityPage.grid(row = 2, column = 3, pady = 2, sticky = S)
-bClanPage = Button(frameMain, text='Clãs', command=lambda: raise_frame(frameClans))
+bClanPage = Button(frameMain, text='Clans', command=lambda: raise_frame(frameClans))
 bClanPage.grid(row = 2, column = 4, pady = 2, sticky = S)
-bDisciPage = Button(frameMain, text='Disciplinas', command=lambda: raise_frame(frameDisci))
+bDisciPage = Button(frameMain, text='Disciplines', command=lambda: raise_frame(frameDisci))
 bDisciPage.grid(row = 2, column = 5, pady = 2, sticky = S)
 
 #tela frameCharacter
 listaChars = Listbox(frameCharacter)
 listaChars.pack(fill = X, expand = YES)
-bCriar = Button(frameCharacter, text = 'Criar', command = lambda: raise_frame(frameCriar))
+bCriar = Button(frameCharacter, text = 'Create', command = lambda: raise_frame(frameCriar))
 bCriar.pack(pady = 15, padx = 15, side = LEFT)
-bEditar = Button(frameCharacter, text = 'Vizualizar', command = viewC)
+bEditar = Button(frameCharacter, text = 'View', command = viewC)
 bEditar.pack(pady = 15, padx = 15, side = LEFT)
-bDeletar = Button(frameCharacter, text = 'Deletar', command = deletarC)
+bDeletar = Button(frameCharacter, text = 'Delete', command = deletarC)
 bDeletar.pack(pady = 15, padx = 15, side = LEFT)
-bVoltar = Button(frameCharacter, text = 'Voltar', command = lambda: raise_frame(frameMain))
+bVoltar = Button(frameCharacter, text = 'Return', command = lambda: raise_frame(frameMain))
 bVoltar.pack(pady = 15, padx = 15, side = LEFT)
 
 #tela frameCriar
@@ -500,9 +500,9 @@ e6.grid(row = 5, column = 1, pady = 2)
 e7 = Entry(frameCriar)
 e7.grid(row = 6, column = 1, pady = 2)
 
-bVoltar2 = Button(frameCriar, text = 'Voltar', command = lambda: raise_frame(frameCharacter))
+bVoltar2 = Button(frameCriar, text = 'Return', command = lambda: raise_frame(frameCharacter))
 bVoltar2.grid(row = 7, column = 1, sticky = W, pady = 2)
-bCriar2 = Button(frameCriar, text = 'Criar', command = criarC)
+bCriar2 = Button(frameCriar, text = 'Create', command = criarC)
 bCriar2.grid(row = 7, column = 0, sticky = W, pady = 2)
 
 #tela frameViewC
@@ -529,9 +529,9 @@ e36.grid(row = 5, column = 1, pady = 2)
 e37 = Entry(frameViewC, textvar = ec7)
 e37.grid(row = 6, column = 1, pady = 2)
 
-bEditar2 = Button(frameViewC, text = 'Editar', command = editC)
+bEditar2 = Button(frameViewC, text = 'Edit', command = editC)
 bEditar2.grid(row = 7, column = 1, sticky = W, pady = 2)
-bVoltar3 = Button(frameViewC, text = 'Voltar', command = lambda: raise_frame(frameCharacter))
+bVoltar3 = Button(frameViewC, text = 'Return', command = lambda: raise_frame(frameCharacter))
 bVoltar3.grid(row = 7, column = 0, sticky = W, pady = 2)
 
 #tela frameClan
@@ -556,13 +556,13 @@ bVoltar.pack(pady = 15, padx = 15, side = BOTTOM)
 #tela frameBoon
 listaBoons = Listbox(frameBoon)
 listaBoons.pack(fill = X, expand = YES)
-bCriarB = Button(frameBoon, text = 'Criar', command = lambda: raise_frame(frameCriar2))
+bCriarB = Button(frameBoon, text = 'Create', command = lambda: raise_frame(frameCriar2))
 bCriarB.pack(pady = 15, padx = 15, side = LEFT)
-bEditarB = Button(frameBoon, text = 'Vizualizar', command = viewB)
+bEditarB = Button(frameBoon, text = 'View', command = viewB)
 bEditarB.pack(pady = 15, padx = 15, side = LEFT)
-bDeletarB = Button(frameBoon, text = 'Deletar', command = deletarB)
+bDeletarB = Button(frameBoon, text = 'Delete', command = deletarB)
 bDeletarB.pack(pady = 15, padx = 15, side = LEFT)
-bVoltar = Button(frameBoon, text = 'Voltar', command = lambda: raise_frame(frameMain))
+bVoltar = Button(frameBoon, text = 'Return', command = lambda: raise_frame(frameMain))
 bVoltar.pack(pady = 15, padx = 15, side = LEFT)
 
 #tela frameCriar2
@@ -577,9 +577,9 @@ e22.grid(row = 1, column = 1, pady = 2)
 e23 = Entry(frameCriar2)
 e23.grid(row = 2, column = 1, pady = 2)
 
-bVoltar4 = Button(frameCriar2, text = 'Voltar', command = lambda: raise_frame(frameBoon))
+bVoltar4 = Button(frameCriar2, text = 'Return', command = lambda: raise_frame(frameBoon))
 bVoltar4.grid(row = 3, column = 1, sticky = W, pady = 2)
-bCriar3 = Button(frameCriar2, text = 'Criar', command = criarB)
+bCriar3 = Button(frameCriar2, text = 'Create', command = criarB)
 bCriar3.grid(row = 3, column = 0, sticky = W, pady = 2)
 
 #tela frameViewB
@@ -594,21 +594,21 @@ e42.grid(row = 1, column = 1, pady = 2)
 e43 = Entry(frameViewB, textvar = eb3)
 e43.grid(row = 2, column = 1, pady = 2)
 
-bEditar3 = Button(frameViewB, text = 'Editar', command = editB)
+bEditar3 = Button(frameViewB, text = 'Edit', command = editB)
 bEditar3.grid(row = 7, column = 1, sticky = W, pady = 2)
-bVoltar5 = Button(frameViewB, text = 'Voltar', command = lambda: raise_frame(frameBoon))
+bVoltar5 = Button(frameViewB, text = 'Return', command = lambda: raise_frame(frameBoon))
 bVoltar5.grid(row = 7, column = 0, sticky = W, pady = 2)
 
 #tela frameCity
 listaSectors = Listbox(frameCity)
 listaSectors.pack(fill = X, expand = YES)
-bCriar4 = Button(frameCity, text = 'Criar', command = lambda: raise_frame(frameCriar3))
+bCriar4 = Button(frameCity, text = 'Create', command = lambda: raise_frame(frameCriar3))
 bCriar4.pack(pady = 15, padx = 15, side = LEFT)
-bEditar4 = Button(frameCity, text = 'Vizualizar', command = viewS)
+bEditar4 = Button(frameCity, text = 'View', command = viewS)
 bEditar4.pack(pady = 15, padx = 15, side = LEFT)
-bDeletar3 = Button(frameCity, text = 'Deletar', command = deletarS)
+bDeletar3 = Button(frameCity, text = 'Delete', command = deletarS)
 bDeletar3.pack(pady = 15, padx = 15, side = LEFT)
-bVoltar = Button(frameCity, text = 'Voltar', command = lambda: raise_frame(frameMain))
+bVoltar = Button(frameCity, text = 'Return', command = lambda: raise_frame(frameMain))
 bVoltar.pack(pady = 15, padx = 15, side = LEFT)
 
 #tela frameCriar3
@@ -623,9 +623,9 @@ e52.grid(row = 1, column = 1, pady = 2)
 e53 = Entry(frameCriar3)
 e53.grid(row = 2, column = 1, pady = 2)
 
-bVoltar1 = Button(frameCriar3, text = 'Voltar', command = lambda: raise_frame(frameCity))
+bVoltar1 = Button(frameCriar3, text = 'Return', command = lambda: raise_frame(frameCity))
 bVoltar1.grid(row = 3, column = 1, sticky = W, pady = 2)
-bCriar1 = Button(frameCriar3, text = 'Criar', command = criarS)
+bCriar1 = Button(frameCriar3, text = 'Create', command = criarS)
 bCriar1.grid(row = 3, column = 0, sticky = W, pady = 2)
 
 #tela frameViewS
@@ -640,9 +640,9 @@ e62.grid(row = 1, column = 1, pady = 2)
 e63 = Entry(frameViewS, textvar = es3)
 e63.grid(row = 2, column = 1, pady = 2)
 
-bEditar3 = Button(frameViewS, text = 'Editar', command = editS)
+bEditar3 = Button(frameViewS, text = 'Edit', command = editS)
 bEditar3.grid(row = 7, column = 1, sticky = W, pady = 2)
-bVoltar5 = Button(frameViewS, text = 'Voltar', command = lambda: raise_frame(frameCity))
+bVoltar5 = Button(frameViewS, text = 'Return', command = lambda: raise_frame(frameCity))
 bVoltar5.grid(row = 7, column = 0, sticky = W, pady = 2)
 
 #tela frameDisci
@@ -658,7 +658,7 @@ for i in range(len(lista_disciplinas)):
     lDisci.insert(END, lista_disciplinas[i].desc)
     lDisci.insert(END, '\n\n')
 s.config(command = lDisci.yview)
-bVoltar = Button(frameDisci, text = 'Voltar', command = lambda: raise_frame(frameMain))
+bVoltar = Button(frameDisci, text = 'Return', command = lambda: raise_frame(frameMain))
 bVoltar.pack(pady = 15, padx = 15, side = BOTTOM)
 
 #define qual o frame inicial
