@@ -1,5 +1,6 @@
 from classes import *
 from tkinter import *
+from TkTreectrl import *
 import os
 import json
 
@@ -148,9 +149,9 @@ listIndex = 0
 def raise_frame(frame):
     #se for o frame de personagens, atualiza a lista
     if frame == frameCharacter:
-        listaChars.delete(0, len(lista_char))
+        listaChars.delete(ALL)
         for i in range(len(lista_char)):
-            listaChars.insert(i, lista_char[i].getName())
+            listaChars.insert(i, lista_char[i].getName(), lista_char[i].getClan(), lista_char[i].getStatus(), lista_char[i].getGen())
     #se for o frame de dividas, atualiza a lista
     elif frame == frameBoon:
         listaBoons.delete(0,len(lista_boon))
@@ -465,8 +466,9 @@ bDisciPage = Button(frameMain, text='Disciplines', command=lambda: raise_frame(f
 bDisciPage.grid(row = 2, column = 5, pady = 2, sticky = S)
 
 #tela frameCharacter
-listaChars = Listbox(frameCharacter)
+listaChars = MultiListbox(frameCharacter)
 listaChars.pack(fill = X, expand = YES)
+listaChars.config(columns=('Name', 'Clan', 'Status', 'Generation'))
 bCriar = Button(frameCharacter, text = 'Create', command = lambda: raise_frame(frameCriar))
 bCriar.pack(pady = 15, padx = 15, side = LEFT)
 bEditar = Button(frameCharacter, text = 'View', command = viewC)
