@@ -1,5 +1,6 @@
 from classes import *
 from tkinter import *
+from tkinter import ttk
 from TkTreectrl import *
 import os
 import json
@@ -90,18 +91,19 @@ else:
             city.setName(load[i][1])
         #se o objeto for do tipo 1 (personagem)
         elif load[i][0] == 1:
-            char = Character()
-            char.setName(load[i][1])
-            char.setGen(load[i][2])
-            char.setAge(load[i][3])
-            char.setInfo(load[i][4])
-            char.setSect(load[i][5])
-            char.setStatus(load[i][6])
-            char.setClan(load[i][7])
+            char = Character(len(lista_char))
+            char.setID(load[i][1])
+            char.setName(load[i][2])
+            char.setGen(int(load[i][3]))
+            char.setAge(load[i][4])
+            char.setInfo(load[i][5])
+            char.setSect(load[i][6])
+            char.setStatus(load[i][7])
+            char.setClan(load[i][8])
             lista_char.append(char)
         #se o objeto for do tipo 2 (divida)
         elif load[i][0] == 2:
-            boon = Boon(load[i][1], load[i][2], load[i][3])
+            boon = Boon(len(lista_boon), load[i][2], load[i][3], load[i][4])
             lista_boon.append(boon)
         #se o objeto for do tipo 3 (setor)
         else:
@@ -179,14 +181,14 @@ def entervalueCity():
 def criarC():
     #pega os valores dos campos de texto
     name = e1.get()
-    gen = e2.get()
+    gen = int(e2.get())
     age = e3.get()
     info = e4.get()
     sect = e5.get()
     status = e6.get()
     clan = e7.get()
     #cria o objeto e define os valores
-    char = Character()
+    char = Character(len(lista_char))
     char.setName(name)
     char.setGen(gen)
     char.setAge(age)
@@ -197,7 +199,7 @@ def criarC():
     #adiciona a lista de personagens
     lista_char.append(char)
     #salva no arquivo
-    novochar = [1, name, gen, age, info, sect, status, clan]
+    novochar = [1,len(lista_char)-1, name, gen, age, info, sect, status, clan]
     f = open('StoryTeller\data.txt', 'r') #trocar para data.txt depois
     temp = json.load(f)
     f.close
@@ -211,6 +213,7 @@ def deletarC():
     select = listaChars.curselection()
     x = int(select[0])
     #deleta do vetor de objetos
+    z = lista_char[x].getID()
     y = lista_char.pop(x)
     #deleta do listview
     listaChars.delete(x)
@@ -218,14 +221,14 @@ def deletarC():
     f = open('StoryTeller\data.txt', 'r') #trocar para data.txt depois
     temp = json.load(f)
     f.close
-    k = 0
+    #k = 0
     for i in range(len(temp)):
         if temp[i][0] == 1:
-            if k == x:
-                z = temp.pop(i)
+            if temp[i][1] == z:
+                k = temp.pop(i)
                 break
-            else:
-                k += 1
+            #else:
+            #    k += 1
     f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
     json.dump(temp, f)
     f.close()
@@ -250,6 +253,8 @@ def viewC():
 def editC():
     #select = listaChars.curselection()
     #listIndex = int(select[0])
+    #Get ID
+    x = lista_char[listIndex].getID()
     #atualiza o objeto com os campos de texto
     lista_char[listIndex].setName(e31.get())
     lista_char[listIndex].setGen(e32.get())
@@ -262,23 +267,90 @@ def editC():
     f = open('StoryTeller\data.txt', 'r') #trocar para data.txt depois
     temp = json.load(f)
     f.close
-    k = 0
+    #k = 0
     for i in range(len(temp)):
         if temp[i][0] == 1:
-            if k == listIndex:
-                temp[i][1] = lista_char[listIndex].getName()
-                temp[i][2] = lista_char[listIndex].getGen()
-                temp[i][3] = lista_char[listIndex].getAge()
-                temp[i][4] = lista_char[listIndex].getInfo()
-                temp[i][5] = lista_char[listIndex].getSect()
-                temp[i][6] = lista_char[listIndex].getStatus()
-                temp[i][7] = lista_char[listIndex].getClan()
+            if temp[i][1] == x:
+                temp[i][2] = lista_char[listIndex].getName()
+                temp[i][3] = lista_char[listIndex].getGen()
+                temp[i][4] = lista_char[listIndex].getAge()
+                temp[i][5] = lista_char[listIndex].getInfo()
+                temp[i][6] = lista_char[listIndex].getSect()
+                temp[i][7] = lista_char[listIndex].getStatus()
+                temp[i][8] = lista_char[listIndex].getClan()
                 break
-            else:
-                k += 1
+            #else:
+            #    k += 1
     f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
     json.dump(temp, f)
     f.close()
+#Gets sort window option
+def getSort():
+    if wSort.get() == "Name":
+        return 0
+    elif wSort.get() == "Clan":
+        return 1
+    elif wSort.get() == "Status":
+        return 2
+    elif wSort.get() == "Gen":
+        return 3
+    elif wSort2.get() == "Type":
+        return 0
+    elif wSort2.get() == "Owner":
+        return 1
+    elif wSort2.get() == "Giver":
+        return 2
+    else:
+        return 6
+#Sort Character list
+def sortC(item, listinp):
+    sortedCItem = []
+    sortedC = []
+    #Sort by name
+    if item == 0:
+        for Character in listinp:
+            sortedCItem.append(Character.name)
+        sortedCItem.sort()
+        for sort_Character in sortedCItem:
+            for unsorted_Character in listinp:
+                if unsorted_Character.name == sort_Character:
+                    sortedC.append(unsorted_Character)
+                    break
+    #Sort by clan
+    elif item == 1:
+        for Character in listinp:
+            sortedCItem.append(Character.clan)
+        sortedCItem.sort()
+        for sort_Character in sortedCItem:
+            for unsorted_Character in listinp:
+                if unsorted_Character.clan == sort_Character:
+                    sortedC.append(unsorted_Character)
+    #Sort by status                
+    elif item == 2:
+        for Character in listinp:
+            sortedCItem.append(Character.status)
+        sortedCItem.sort()
+        for sort_Character in sortedCItem:
+            for unsorted_Character in listinp:
+                if unsorted_Character.status == sort_Character:
+                    sortedC.append(unsorted_Character)
+    #Sort by gen           
+    elif item == 3:
+        for Character in listinp:
+            sortedCItem.append(Character.gen)
+        sortedCItem.sort()
+        for sort_Character in sortedCItem:
+            for unsorted_Character in listinp:
+                if unsorted_Character.gen == sort_Character:
+                    sortedC.append(unsorted_Character)
+    else:
+        return
+    res = []
+    [res.append(x) for x in sortedC if x not in res] 
+    listinp[:] = res
+    listaChars.delete(ALL)
+    for i in range(len(listinp)):
+        listaChars.insert(i, listinp[i].getName(), listinp[i].getClan(), listinp[i].getStatus(), listinp[i].getGen())
 #Cria uma nova divida
 def criarB():
     #pega os valores dos campos de texto
@@ -286,11 +358,11 @@ def criarB():
     owner = e22.get()
     giver = e23.get()
     #cria o objeto
-    boon = Boon(btype, owner, giver)
+    boon = Boon(len(lista_boon), btype, owner, giver)
     #adiciona ao vetor de dividas
     lista_boon.append(boon)
     #salva no arquivo
-    novoboon = [2, btype, owner, giver]
+    novoboon = [2, len(lista_boon)-1, btype, owner, giver]
     f = open('StoryTeller\data.txt', 'r') #trocar para data.txt depois
     temp = json.load(f)
     f.close
@@ -303,6 +375,7 @@ def deletarB():
     #pega o item selecionado
     select = listaBoons.curselection()
     x = int(select[0])
+    z = lista_boon[x].getID()
     #remove do vetor de objetos
     y = lista_boon.pop(x)
     #remove do listview
@@ -311,14 +384,14 @@ def deletarB():
     f = open('StoryTeller\data.txt', 'r') #trocar para data.txt depois
     temp = json.load(f)
     f.close
-    k = 0
+    #k = 0
     for i in range(len(temp)):
         if temp[i][0] == 2:
-            if k == x:
-                z = temp.pop(i)
+            if temp[i][1] == z:
+                k = temp.pop(i)
                 break
-            else:
-                k += 1
+            #else:
+            #    k += 1
     f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
     json.dump(temp, f)
     f.close()
@@ -337,6 +410,8 @@ def viewB():
     eb3.set(lista_boon[listIndex].getGiver())
 #Editar uma divida
 def editB():
+    #Get ID
+    x = lista_boon[listIndex].getID()
     #atualiza o objeto com os campos de texto
     lista_boon[listIndex].setType(e41.get())
     lista_boon[listIndex].setOwner(e42.get())
@@ -348,16 +423,55 @@ def editB():
     k = 0
     for i in range(len(temp)):
         if temp[i][0] == 2:
-            if k == listIndex:
-                temp[i][1] = lista_boon[listIndex].getType()
-                temp[i][2] = lista_boon[listIndex].getOwner()
-                temp[i][3] = lista_boon[listIndex].getGiver()
+            if temp[i][1] == x:
+                temp[i][2] = lista_boon[listIndex].getType()
+                temp[i][3] = lista_boon[listIndex].getOwner()
+                temp[i][4] = lista_boon[listIndex].getGiver()
                 break
-            else:
-                k += 1
+            #else:
+            #    k += 1
     f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
     json.dump(temp, f)
     f.close()
+#Sort Boon list
+def sortB(item, listinp):
+    sortedBItem = []
+    sortedB = []
+    #Sort by type
+    if item == 0:
+        for Boon in listinp:
+            sortedBItem.append(Boon.btype)
+        sortedBItem.sort()
+        for sort_Boon in sortedBItem:
+            for unsorted_Boon in listinp:
+                if unsorted_Boon.btype == sort_Boon:
+                    sortedB.append(unsorted_Boon)
+    #Sort by giver
+    elif item == 1:
+        for Boon in listinp:
+            sortedBItem.append(Boon.owner)
+        sortedBItem.sort()
+        for sort_Boon in sortedBItem:
+            for unsorted_Boon in listinp:
+                if unsorted_Boon.owner == sort_Boon:
+                    sortedB.append(unsorted_Boon)
+    #Sort by status                
+    elif item == 2:
+        for Boon in listinp:
+            sortedBItem.append(Boon.giver)
+        sortedBItem.sort()
+        for sort_Boon in sortedBItem:
+            for unsorted_Boon in listinp:
+                if unsorted_Boon.giver == sort_Boon:
+                    sortedB.append(unsorted_Boon)
+    else:
+        return
+    res = []
+    [res.append(x) for x in sortedB if x not in res] 
+    listinp[:] = res
+    listaBoons.delete(ALL)
+    for i in range(len(listinp)):
+        listaBoons.insert(i, listinp[i].getType(), listinp[i].getOwner(), listinp[i].getGiver())
 #Cria um novo setor
 def criarS():
     #pega os valores dos campos de texto
@@ -477,6 +591,12 @@ bDeletar = Button(frameCharacter, text = 'Delete', command = deletarC)
 bDeletar.pack(pady = 15, padx = 15, side = LEFT)
 bVoltar = Button(frameCharacter, text = 'Return', command = lambda: raise_frame(frameMain))
 bVoltar.pack(pady = 15, padx = 15, side = LEFT)
+wlist = ["Name", "Clan", "Status", "Gen"]
+wSort = ttk.Combobox(frameCharacter, values = wlist)
+wSort.set("Sort by")
+wSort.pack(pady = 15, padx = 15, side = LEFT)
+bSort0 = Button(frameCharacter, text = 'Sort', command = lambda: sortC(getSort(), listinp = lista_char))
+bSort0.pack(pady = 15, padx = 15, side = LEFT)
 
 #tela frameCriar
 l1 = Label(frameCriar, text = "Name:").grid(row = 0, column = 0, sticky = W, pady = 2) 
@@ -567,6 +687,12 @@ bDeletarB = Button(frameBoon, text = 'Delete', command = deletarB)
 bDeletarB.pack(pady = 15, padx = 15, side = LEFT)
 bVoltar = Button(frameBoon, text = 'Return', command = lambda: raise_frame(frameMain))
 bVoltar.pack(pady = 15, padx = 15, side = LEFT)
+wlist2 = ["Type", "Owner", "Giver"]
+wSort2 = ttk.Combobox(frameBoon, values = wlist2)
+wSort2.set("Sort by")
+wSort2.pack(pady = 15, padx = 15, side = LEFT)
+bSort1 = Button(frameBoon, text = 'Sort', command = lambda: sortB(getSort(), listinp = lista_boon))
+bSort1.pack(pady = 15, padx = 15, side = LEFT)
 
 #tela frameCriar2
 l21 = Label(frameCriar2, text = "Type:").grid(row = 0, column = 0, sticky = W, pady = 2) 

@@ -117,16 +117,21 @@ class Specialist():
         self.function = function
 
 class Boon():
-    def __init__(self, btype, owner, giver):
+    def __init__(self, inp, btype, owner, giver):
+        self.id = inp
         self.btype = btype
         self.owner = owner
         self.giver = giver
+    def setID(self, inp):
+        self.id = inp
     def setType(self, btype):
         self.btype = btype
     def setOwner(self, owner):
         self.owner = owner
     def setGiver(self, giver):
         self.giver = giver
+    def getID(self):
+        return self.id
     def getOwner(self):
         return self.owner
     def getGiver(self):
@@ -135,7 +140,7 @@ class Boon():
         return self.btype
 
 class Character():
-    def __init__(self):
+    def __init__(self, inp):
         super().__init__()
         self.name = "name"
         self.gen = 13
@@ -144,7 +149,10 @@ class Character():
         self.sect = None
         self.status = None
         self.clan = None
+        self.id = inp
 
+    def setID(self, inp):
+        self.id = inp
     def setName(self, name):
         self.name = name
     def setGen(self, gen):
@@ -159,6 +167,8 @@ class Character():
         self.status = status
     def setClan(self, clan):
         self.clan = clan
+    def getID(self):
+        return self.id
     def getName(self):
         return self.name
     def getGen(self):
