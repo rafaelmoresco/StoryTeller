@@ -154,13 +154,13 @@ def raise_frame(frame):
             listaChars.insert(i, lista_char[i].getName(), lista_char[i].getClan(), lista_char[i].getStatus(), lista_char[i].getGen())
     #se for o frame de dividas, atualiza a lista
     elif frame == frameBoon:
-        listaBoons.delete(0,len(lista_boon))
+        listaBoons.delete(ALL)
         for i in range(len(lista_boon)):
-            listaBoons.insert(i, lista_boon[i].getOwner())
+            listaBoons.insert(i, lista_boon[i].getType(), lista_boon[i].getOwner(), lista_boon[i].getGiver())
     elif frame == frameCity:
-        listaSectors.delete(0,len(lista_setores))
+        listaSectors.delete(ALL)
         for i in range(len(lista_setores)):
-            listaSectors.insert(i, lista_setores[i].getSector())
+            listaSectors.insert(i, lista_setores[i].getSector(), lista_setores[i].getOwner(), lista_setores[i].getControl())
     #muda o frame
     frame.tkraise()
 #Sai do programa
@@ -556,8 +556,9 @@ bVoltar = Button(frameClans, text = 'Voltar', command = lambda: raise_frame(fram
 bVoltar.pack(pady = 15, padx = 15, side = BOTTOM)
 
 #tela frameBoon
-listaBoons = Listbox(frameBoon)
+listaBoons = MultiListbox(frameBoon)
 listaBoons.pack(fill = X, expand = YES)
+listaBoons.config(columns=('Type', 'Owner', 'Giver'))
 bCriarB = Button(frameBoon, text = 'Create', command = lambda: raise_frame(frameCriar2))
 bCriarB.pack(pady = 15, padx = 15, side = LEFT)
 bEditarB = Button(frameBoon, text = 'View', command = viewB)
@@ -602,8 +603,9 @@ bVoltar5 = Button(frameViewB, text = 'Return', command = lambda: raise_frame(fra
 bVoltar5.grid(row = 7, column = 0, sticky = W, pady = 2)
 
 #tela frameCity
-listaSectors = Listbox(frameCity)
+listaSectors = MultiListbox(frameCity)
 listaSectors.pack(fill = X, expand = YES)
+listaSectors.config(columns=('Sector', 'Owner', 'Control'))
 bCriar4 = Button(frameCity, text = 'Create', command = lambda: raise_frame(frameCriar3))
 bCriar4.pack(pady = 15, padx = 15, side = LEFT)
 bEditar4 = Button(frameCity, text = 'View', command = viewS)
