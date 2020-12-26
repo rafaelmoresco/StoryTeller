@@ -75,41 +75,46 @@ lista_char = []
 lista_boon = []
 ####File Loading####
 file_path = 'StoryTeller/data.txt'
-#se o arquivo estiver vazio
-if os.stat(file_path).st_size == 0:
-    new = True
-#se estiver com informações
-else:
-    new = False
-    f = open('StoryTeller/data.txt', 'r')
-    load = json.load(f)
+try:    
+    #se o arquivo estiver vazio
+    if os.stat(file_path).st_size == 0:
+        new = True
+    #se estiver com informações
+    else:
+        new = False
+        f = open('StoryTeller/data.txt', 'r')
+        load = json.load(f)
+        f.close()
+        #lê o vetor de informações
+        for i in range(len(load)):
+            #se o objeto for do tipo 0 (cidade)
+            if load[i][0] == 0:
+                city.setName(load[i][1])
+            #se o objeto for do tipo 1 (personagem)
+            elif load[i][0] == 1:
+                char = Character(len(lista_char))
+                char.setID(load[i][1])
+                char.setName(load[i][2])
+                char.setGen(int(load[i][3]))
+                char.setAge(load[i][4])
+                char.setInfo(load[i][5])
+                char.setSect(load[i][6])
+                char.setStatus(load[i][7])
+                char.setClan(load[i][8])
+                lista_char.append(char)
+            #se o objeto for do tipo 2 (divida)
+            elif load[i][0] == 2:
+                boon = Boon(len(lista_boon), load[i][2], load[i][3], load[i][4])
+                lista_boon.append(boon)
+            #se o objeto for do tipo 3 (setor)
+            else:
+                setor = AdminS(len(lista_setores), load[i][2], load[i][3], load[i][4])
+                lista_setores.append(setor)
+        print("File successefuly loaded")
+except:
+    f = open('StoryTeller/data.txt', 'w+')
     f.close()
-    #lê o vetor de informações
-    for i in range(len(load)):
-        #se o objeto for do tipo 0 (cidade)
-        if load[i][0] == 0:
-            city.setName(load[i][1])
-        #se o objeto for do tipo 1 (personagem)
-        elif load[i][0] == 1:
-            char = Character(len(lista_char))
-            char.setID(load[i][1])
-            char.setName(load[i][2])
-            char.setGen(int(load[i][3]))
-            char.setAge(load[i][4])
-            char.setInfo(load[i][5])
-            char.setSect(load[i][6])
-            char.setStatus(load[i][7])
-            char.setClan(load[i][8])
-            lista_char.append(char)
-        #se o objeto for do tipo 2 (divida)
-        elif load[i][0] == 2:
-            boon = Boon(len(lista_boon), load[i][2], load[i][3], load[i][4])
-            lista_boon.append(boon)
-        #se o objeto for do tipo 3 (setor)
-        else:
-            setor = AdminS(load[i][1], load[i][2], load[i][3])
-            lista_setores.append(setor)
-    print("File successefuly loaded")
+    new = True
 ####Init do Tkinter####
 #Define tela principal
 root = Tk()
@@ -300,6 +305,12 @@ def getSort():
         return 1
     elif wSort2.get() == "Giver":
         return 2
+    elif wSort3.get() == "Sector":
+        return 0
+    elif wSort3.get() == "Owner":
+        return 1
+    elif wSort3.get() == "Control":
+        return 2
     else:
         return 6
 #Sort Character list
@@ -479,11 +490,11 @@ def criarS():
     owner = e52.get()
     control = e53.get()
     #cria o objeto
-    setor = AdminS(sector, owner, control)
+    setor = AdminS(len(lista_setores), sector, owner, control)
     #adiciona ao vetor de dividas
     lista_setores.append(setor)
     #salva no arquivo
-    novosector = [3, sector, owner, control]
+    novosector = [3, len(lista_setores)-1, sector, owner, control]
     f = open('StoryTeller\data.txt', 'r') #trocar para data.txt depois
     temp = json.load(f)
     f.close
@@ -496,6 +507,7 @@ def deletarS():
     #pega o item selecionado
     select = listaSectors.curselection()
     x = int(select[0])
+    z = lista_setores[x].getID()
     #remove do vetor de objetos
     y = lista_setores.pop(x)
     #remove do listview
@@ -504,14 +516,14 @@ def deletarS():
     f = open('StoryTeller\data.txt', 'r') #trocar para data.txt depois
     temp = json.load(f)
     f.close
-    k = 0
+    #k = 0
     for i in range(len(temp)):
         if temp[i][0] == 3:
-            if k == x:
+            if temp[i][1] == z:
                 z = temp.pop(i)
                 break
-            else:
-                k += 1
+            #else:
+            #    k += 1
     f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
     json.dump(temp, f)
     f.close()
@@ -530,6 +542,8 @@ def viewS():
     es3.set(lista_setores[listIndex].getControl())
 #Editar um setor
 def editS():
+    #Get ID
+    x = lista_setores[listIndex].getID()
     #atualiza o objeto com os campos de texto
     lista_setores[listIndex].setSector(e61.get())
     lista_setores[listIndex].setOwner(e62.get())
@@ -541,16 +555,55 @@ def editS():
     k = 0
     for i in range(len(temp)):
         if temp[i][0] == 3:
-            if k == listIndex:
-                temp[i][1] = lista_setores[listIndex].getSector()
-                temp[i][2] = lista_setores[listIndex].getOwner()
-                temp[i][3] = lista_setores[listIndex].getControl()
+            if temp[i][1] == x:
+                temp[i][2] = lista_setores[listIndex].getSector()
+                temp[i][3] = lista_setores[listIndex].getOwner()
+                temp[i][4] = lista_setores[listIndex].getControl()
                 break
-            else:
-                k += 1
+            #else:
+            #    k += 1
     f = open('StoryTeller\data.txt', 'w') #trocar para data.txt depois
     json.dump(temp, f)
     f.close()
+#Sort Sectors list
+def sortS(item, listinp):
+    sortedSItem = []
+    sortedS = []
+    #Sort by sector
+    if item == 0:
+        for Sector in listinp:
+            sortedSItem.append(Sector.sector)
+        sortedSItem.sort()
+        for sort_Sector in sortedSItem:
+            for unsorted_Sector in listinp:
+                if unsorted_Sector.sector == sort_Sector:
+                    sortedS.append(unsorted_Sector)
+    #Sort by owner
+    elif item == 1:
+        for Sector in listinp:
+            sortedSItem.append(Sector.owner)
+        sortedSItem.sort()
+        for sort_Sector in sortedSItem:
+            for unsorted_Sector in listinp:
+                if unsorted_Sector.owner == sort_Sector:
+                    sortedS.append(unsorted_Sector)
+    #Sort by control
+    elif item == 2:
+        for Sector in listinp:
+            sortedSItem.append(Sector.control)
+        sortedSItem.sort()
+        for sort_Sector in sortedSItem:
+            for unsorted_Sector in listinp:
+                if unsorted_Sector.control == sort_Sector:
+                    sortedS.append(unsorted_Sector)
+    else:
+        return
+    res = []
+    [res.append(x) for x in sortedS if x not in res] 
+    listinp[:] = res
+    listaSectors.delete(ALL)
+    for i in range(len(listinp)):
+        listaSectors.insert(i, listinp[i].getSector(), listinp[i].getOwner(), listinp[i].getControl())
 #Modelagem Telas
 for frame in (frameMain, frameCharacter, frameCity, frameClans, frameBoon, frameDisci, frameInit, frameCriar, frameCriar2, frameViewB, frameViewC, frameCriar3, frameViewS):
     frame.grid(row=0, column=0, sticky='news')
@@ -740,6 +793,12 @@ bDeletar3 = Button(frameCity, text = 'Delete', command = deletarS)
 bDeletar3.pack(pady = 15, padx = 15, side = LEFT)
 bVoltar = Button(frameCity, text = 'Return', command = lambda: raise_frame(frameMain))
 bVoltar.pack(pady = 15, padx = 15, side = LEFT)
+wlist3 = ["Sector", "Owner", "Control"]
+wSort3 = ttk.Combobox(frameCity, values = wlist3)
+wSort3.set("Sort by")
+wSort3.pack(pady = 15, padx = 15, side = LEFT)
+bSort2 = Button(frameCity, text = 'Sort', command = lambda: sortS(getSort(), listinp = lista_setores))
+bSort2.pack(pady = 15, padx = 15, side = LEFT)
 
 #tela frameCriar3
 l51 = Label(frameCriar3, text = "Sector:").grid(row = 0, column = 0, sticky = W, pady = 2) 

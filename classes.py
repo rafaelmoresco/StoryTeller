@@ -94,16 +94,21 @@ class City():
         return self.admin
 
 class AdminS():
-    def __init__(self, sector, owner, control):
+    def __init__(self, inp, sector, owner, control):
+        self.id = inp
         self.sector = sector
         self.owner = owner
         self.control = control
+    def getID(self):
+        return self.id
     def getSector(self):
         return self.sector
     def getOwner(self):
         return self.owner
     def getControl(self):
         return self.control
+    def setID(self, inp):
+        self.id = inp
     def setSector(self, sector):
         self.sector = sector
     def setOwner(self, owner):
