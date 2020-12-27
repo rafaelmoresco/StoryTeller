@@ -74,7 +74,7 @@ lista_char = []
 #Boons
 lista_boon = []
 ####File Loading####
-file_path = 'StoryTeller/data.txt'
+file_path = 'data.txt'
 try:    
     #se o arquivo estiver vazio
     if os.stat(file_path).st_size == 0:
@@ -82,7 +82,7 @@ try:
     #se estiver com informações
     else:
         new = False
-        f = open('StoryTeller/data.txt', 'r')
+        f = open('data.txt', 'r')
         load = json.load(f)
         f.close()
         #lê o vetor de informações
@@ -112,7 +112,7 @@ try:
                 lista_setores.append(setor)
         print("File successefuly loaded")
 except:
-    f = open('StoryTeller/data.txt', 'w+')
+    f = open('data.txt', 'w+')
     f.close()
     new = True
 ####Init do Tkinter####
